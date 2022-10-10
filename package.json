@@ -1,0 +1,25 @@
+{
+  "name": "project-5---products-management",
+  "version": "1.0.0",
+  "description": "group 45",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jatin2062000/Project-5---Products-Management.git"
+  },
+  "author": "group 45",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jatin2062000/Project-5---Products-Management/issues"
+  },
+  "homepage": "https://github.com/jatin2062000/Project-5---Products-Management#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.5"
+  }
+}

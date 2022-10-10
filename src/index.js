@@ -12,7 +12,7 @@ mongoose.connect("mongodb+srv://functionup:K3OCHkFxsJsV53MA@cluster0.e4rwd2y.mon
 {
     useNewUrlParser: true
 })
-.then( () => console.log("MongoDb is connected"))
+.then( () => console.log("MongoDb is connected with Group 45"))
 .catch ( err => console.log(err) );
 
 app.use('/',route);

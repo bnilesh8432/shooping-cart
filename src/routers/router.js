@@ -5,6 +5,7 @@ const register = require("../controllers/userController")
 
 
 router.post('/register',register.createUser)
+router.put('/user/:userId/profile',register.updateProfile)
 
 
 

@@ -1,6 +1,7 @@
 const userModel = require('../models/userModel');
 const validator = require('../validator/validator')
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
 const uploadFile = require("../aws/aws")
 
 
@@ -128,16 +129,20 @@ const userLogin = async (req, res)=>{
    if(!email) return res.status(400).send({status:false, message:"email not present"})
    if(!password) return res.status(400).send({status:false, message:"password not present"})
 
- if(!isValidEmail(email))return res.status(400).send({status:false, message:"email is not correct formate"})
- if(!isValidPassword(password))return res.status(400).send({status:false, message:"password is not correct formate"})
+//  if(!isValidEmail(email))return res.status(400).send({status:false, message:"email is not correct formate"})
+//  if(!isValidPassword(password))return res.status(400).send({status:false, message:"password is not correct formate"})
 
- const findUser = await userModel.findOne({email:email, password:password})
- if(!findUser) return res.send(404).send({status:false, message: "email or password is incorrect"})
+ const User = await userModel.findOne({email:email})
+ if(!User) return res.status(404).send({status:false, message: "user not found with this email id"})
 
- const payload = { userId: user._id, iat: Math.floor(Date.now() / 1000) };
+ let isValidPass =await bcrypt.compare(password,User.password)
+
+ if(!isValidPass) return res.status(404).send({status:false, message: "enter correct password..."})
+
+ const payload = { userId: User._id, iat: Math.floor(Date.now() / 1000) , exp : Math.floor(Date.now() / 1000+60*60*24)};
 
    const token = jwt.sign(payload, "group45")
-   return res.status(200).send({ status: true, message: "User login successfully", token: token, exp: payload.exp, });
+   return res.status(200).send({ status: true, message: "User login successfully",userId : User._id ,token: token });
 } catch (err) {
   res.status(500).send({ status: false, message: err.message });
 }};

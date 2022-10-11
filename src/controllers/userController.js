@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const uploadFile = require("../aws/aws")
 
 
+//========================================Create User==============================================================================================
 
 const createUser = async function (req, res) {
     try {
@@ -116,6 +117,8 @@ const createUser = async function (req, res) {
     }
 }
 
+//=================================================login========================================================================================
+
 const userLogin = async (req, res)=>{
     try{
         const data =  req.body;
@@ -139,8 +142,21 @@ const userLogin = async (req, res)=>{
   res.status(500).send({ status: false, message: err.message });
 }};
 
- 
 
+//=============================================Get Api==================================================================================
+
+const getUser = async function(req, res){
+  try{
+      let userId = req.params.userId
+
+      const user = await userModel.findOne({_id: userId})
+      return res.status(200).send({status: true, message: "User Profile Details", data: user})
+  } catch(error){
+      return res.status(500).send({status: false, message: error.Message})
+  }
+}
+ 
+//=========================================Update Profile==========================================================================================
 
 const updateProfile = async function (req, res) {
     try {
@@ -223,4 +239,4 @@ const updateProfile = async function (req, res) {
     }
 }
 
-module.exports = { createUser, updateProfile, userLogin }
+module.exports = { createUser, userLogin, getUser, updateProfile }

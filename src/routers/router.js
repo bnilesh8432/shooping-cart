@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const register = require("../controllers/userController")
 const auth= require("../middleware/midd")
-
+const {createProduct} = require('../controllers/productController')
 
 router.post('/register',register.createUser)
 router.post('/login',register.userLogin)
@@ -10,7 +10,8 @@ router.put('/user/:userId/profile',auth.Authentication,auth.Authorization,regist
 
 router.get('/user/:userId/profile',auth.Authentication,register.getUser)
 
-// router.get('/books/:bookId',auth.authentication,createbook.getBooksById)
+//===============Product-API==================//
+ router.post('/products', createProduct )
 
 
 

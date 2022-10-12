@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 
+
 //request body validation 
 const isValidRequestBody = function (reqbody) {
     if (!Object.keys(reqbody).length) {
         return false;
     }
     return true;
+    // const isValidRequestBody = function (reqbody) {
+    //     if(Object.keys(reqbody).length==0) 
+    //         return false;
 };
 
 //objectId body validation 
@@ -15,10 +19,10 @@ const isValidObjectId = function (objectId) {
 
 // checking validation for undefined, null and string
 const isValid = function (value) {
-    if (typeof value === "undefined" ) return false;
-    if (typeof value === "string" && value.trim().length == 0) return false;
-    if (typeof value === "string") return true;
-};
+    if (typeof value === "undefined" || value === null) return false;
+    if (typeof value === "string" && value.trim().length === 0) return false;
+    return true;
+}
 
 // email validation
 const isValidEmail = function (email) {
@@ -50,4 +54,11 @@ const isValidPhone = function (phone) {
     return true
 }
 
-module.exports = { isValidRequestBody, isValidEmail, isValid, isvalidPincode, isValidPassword, isValidPhone, isValidObjectId }
+const isValidEnum  = (availableSizes)=>{
+    let enums = ["S", "XS", "M", "X", "L", "XXL", "XL"]
+    if(enums.includes(availableSizes))
+       { return false}
+        return true;
+}
+module.exports = { isValidRequestBody, isValidEmail, isValid, isvalidPincode, isValidPassword, isValidPhone, 
+    isValidObjectId, isValidEnum}

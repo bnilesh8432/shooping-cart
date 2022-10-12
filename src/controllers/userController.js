@@ -166,7 +166,6 @@ const updateProfile = async function (req, res) {
     try {
         const body = req.body;
         const userId = req.params.userId
-        console.log(userId)
         const file = req.files 
 
         if (Object.keys(body).length == 0 && typeof file == 'undefined') return res.status(400).send({ status: false, message: "plz enter atleast one field to update .." })

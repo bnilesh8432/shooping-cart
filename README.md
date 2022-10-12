@@ -51,6 +51,7 @@
 ### POST /register
 - Create a user document from request body. Request body must contain image.
 - Upload image to S3 bucket and save it's public url in user document.
+
 - Save password in encrypted format. (use bcrypt)
 - __Response format__
   - _**On success**_ - Return HTTP status 201. Also return the user document. The response should be a JSON object like [this](#successful-response-structure)
@@ -209,6 +210,7 @@ Send [form-data](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
 ### POST /products
 - Create a product document from request body.
 - Upload product image to S3 bucket and save image public url in document.
+Upload image to S3 bucket and save it's public url in user document.
 - __Response format__
   - _**On success**_ - Return HTTP status 201. Also return the product document. The response should be a JSON object like [this](#successful-response-structure)
   - _**On error**_ - Return a suitable error message with a valid HTTP status code. The response should be a JSON object like [this](#error-response-structure)

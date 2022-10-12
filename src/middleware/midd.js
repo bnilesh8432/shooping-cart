@@ -14,13 +14,15 @@ const Authentication = async function (req, res, next) {
           return res.status(400).send({ status: false, message: 'You are not logged in, Please login to proceed your request,Add token' })
       }
       token=token.split(' ')
+      console.log(typeof token[1])
       let decodedToken
       try {
-          decodedToken = jwt.verify(token[1], "Group45")
+          decodedToken = jwt.verify(token[1], "group45")
+          console.log(decodedToken)
       } catch (error) {
           return res.status(400).send({ status: false, msg: "INVALID TOKEN" })
       }
-      req.userId = decodedToken._id
+      req.userId = decodedToken.userId
       next();
 
   } catch (error) {
@@ -34,7 +36,7 @@ const Authentication = async function (req, res, next) {
 
 const Authorization = async (req, res, next) => {
     try {
-        let loggedInUser = req.decodedToken.userId;
+        let loggedInUser = req.userId;
         let loginUser;
         
         if(req.params.userId){
@@ -47,8 +49,6 @@ const Authorization = async (req, res, next) => {
           
           loginUser = checkUserId._id.toString();
         }
-    
-        if(!loginUser) return res.status(400).send({ status: false, message: "User-id is required" });
     
         if(loggedInUser !== loginUser) 
           return res.status(403).send({ status: false, message: "Error!! authorization failed" });

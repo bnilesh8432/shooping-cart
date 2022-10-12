@@ -25,10 +25,6 @@ const createUser = async function (req, res) {
                 .status(400)
                 .send({ status: false, message: "ProfileImage File is required" });
         }
-
-        if (!validator.isValidImg.profileImage || profileImage == "")
-            return res.status(400).send({ status: false, Message: "ProfileImage field should have a image file" })
-
         if (!validator.isValid(fname)) {
             return res.status(400).send({ status: false, message: "Provide the First Name " });
         }
@@ -142,7 +138,7 @@ const userLogin = async (req, res)=>{
  const payload = { userId: User._id, iat: Math.floor(Date.now() / 1000) , exp : Math.floor(Date.now() / 1000+60*60*24)};
 
    const token = jwt.sign(payload, "group45")
-   return res.status(200).send({ status: true, message: "User login successfully",userId : User._id ,token: token });
+   return res.status(200).send({ status: true, message: "User login successfully",data:{userId : User._id ,token: token} });
 } catch (err) {
   res.status(500).send({ status: false, message: err.message });
 }};
@@ -153,8 +149,11 @@ const userLogin = async (req, res)=>{
 const getUser = async function(req, res){
   try{
       let userId = req.params.userId
-
+    //   if(!userId) return res.status(404).send({status:false, message: "fill something"})
+      
       const user = await userModel.findOne({_id: userId})
+      if(!user) return res.status(404).send({status:false, message: "no exist userID"})
+
       return res.status(200).send({status: true, message: "User Profile Details", data: user})
   } catch(error){
       return res.status(500).send({status: false, message: error.Message})

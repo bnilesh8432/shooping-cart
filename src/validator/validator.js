@@ -44,19 +44,10 @@ const isValidPassword = function (password) {
 
 // phone validation
 const isValidPhone = function (phone) {
-    if( /^[6-9]\d{}$/.test(phone)){
+    if (! /^[6-9]\d{9}$/.test(phone)){
         return false
     }
     return true
 }
 
-// image validation
-const isValidImg = (img) => {
-    if(! /image\/png|image\/jpeg|image\/jpg/.test(img)){
-        return false
-    }
-    return true
-}
-
-
-module.exports = { isValidRequestBody, isValidEmail, isValid, isvalidPincode, isValidPassword, isValidPhone, isValidObjectId, isValidImg }
+module.exports = { isValidRequestBody, isValidEmail, isValid, isvalidPincode, isValidPassword, isValidPhone, isValidObjectId }

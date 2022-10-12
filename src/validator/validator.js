@@ -15,7 +15,7 @@ const isValidObjectId = function (objectId) {
 
 // checking validation for undefined, null and string
 const isValid = function (value) {
-    if (typeof value === "undefined" || typeof value === null) return false;
+    if (typeof value === "undefined" ) return false;
     if (typeof value === "string" && value.trim().length == 0) return false;
     if (typeof value === "string") return true;
 };
@@ -44,7 +44,7 @@ const isValidPassword = function (password) {
 
 // phone validation
 const isValidPhone = function (phone) {
-    if( /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6789]\d{9}$/.test(phone)){
+    if( /^[6-9]\d{}$/.test(phone)){
         return false
     }
     return true

@@ -496,6 +496,28 @@ const createProduct = async (req, res)=>
 
 
 
+ const getProductById = async (req, res) => {
+    try {
+        let Id = req.body.productId
+        if(!validator.isValidObjectId(Id)){
+            return res.status(400).send({status: false, message: "Please enter valid productId"})
+        }
+        let isValidproductId = await productModel.findById({_id: Id})
+        if(!isValidproductId){
+            return res.status(404).send({status: false, message: "ProductId is not found"})
+        }
+        if(isValidproductId.isDeleted == true){
+            return res.status(404).send({status: false, message: "product is already deleted"})
+        }
+        let allProducts = await productModel.findOne({_id: Id, isDeleted: false}).select({deletedAt: 0})
+            return res.status(200).send({status: true, message: "Success", data: allProducts})
+        }
+
+    catch (err){
+        return res.status(500).send({status: false, message: err.message})
+    }
+}
+
 
 
 
@@ -558,4 +580,4 @@ const createProduct = async (req, res)=>
 }
 
 
-module.exports={deleteByIDProduct}
+module.exports={deleteByIDProduct, getProductById}

@@ -190,7 +190,7 @@ const updateProfile = async function (req, res) {
         }
         if (phone) {
             if (!validator.isValid(phone)) return res.status(400).send({ status: false, message: "phone is required.." })
-            if (!validator.isValidPhone(phone)) return res.status(400).send({ status: false, message: "plz enter valid email.." })
+            if (!validator.isValidPhone(phone)) return res.status(400).send({ status: false, message: "plz enter valid phone no..." })
             data['phone'] = phone
         }
         if (password) {

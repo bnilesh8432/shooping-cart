@@ -34,7 +34,7 @@ const createProduct = async (req, res)=>{
     if(uniqueTitle){return res.status(400).send({status:false, message: "title must be unique"})}
 
     if (isValidEnum(availableSizes))
-      return res.status(400).send({ status: false, msg: "availableSizes should be of (S,XS,M,X,L,XXL,XL)" });
+      return res.status(400).send({ status: false, msg: "availableSizes should be of (S, XS, M, X, L, XXL, XL)" });
 
       const saveData = await productModel.create(data)
       res.status(201).send({ status: true, message: 'product created successfully', data: saveData })

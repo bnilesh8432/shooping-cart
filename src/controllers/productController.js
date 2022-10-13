@@ -1,6 +1,6 @@
 const productModel = require('../models/productModel');
 const uploadFile = require("../aws/aws")
-
+const mongoose=require('mongoose')
 const validator = require('../validator/validator')
 
 const createProduct = async (req, res) => {
@@ -9,7 +9,7 @@ const createProduct = async (req, res) => {
 
         const data = req.body
 
-        const { title, description, price, isFreeShipping, productImage, style, availableSizes, installments } = data
+        const { title, description, price, style, availableSizes, installments } = data
 
         if (!validator.isValid(title)) { return res.status(400).send({ status: false, message: "title required" }) }
 
@@ -44,7 +44,7 @@ const createProduct = async (req, res) => {
 
         const saveData = await productModel.create(data)
 
-        res.status(201).send({ status: true, message: 'product created successfully', data: saveData })
+        res.status(201).send({ status: true, message: 'Success', data: saveData })
 
     }
 
@@ -110,7 +110,7 @@ const getProduct = async function (req, res) {
 
 const getProductById = async (req, res) => {
     try {
-        let Id = req.body.productId
+        let Id = req.params.productId
         if (!validator.isValidObjectId(Id)) {
             return res.status(400).send({ status: false, message: "Please enter valid productId" })
         }

@@ -71,7 +71,8 @@ const getProduct = async function (req, res) {
         if (name) {
             name = name.trim()
             if (!validator.isValid(name)) return res.status(400).send({ status: false, message: 'plz enter name..' })
-            filters['title'] = name
+            const regexName = new RegExp(name, "i");
+            filters['title'] = {$regex : regexName}
             console.log(filters['title'])
 
         }

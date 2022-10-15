@@ -16,35 +16,9 @@ router.get('/products/:productId', getProductById)
 // router.put('/products/:productId', updateProfile)
 router.delete('/products/:productId', deleteByIDProduct)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports = router;
-
+//===============If Path Not Found==================//
 router.all('/*', async function (req, res) {
     return res.status(404).send({ status: false, message: "Page Not Found" })
 })
+
+module.exports = router;

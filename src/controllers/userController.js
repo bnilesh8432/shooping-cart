@@ -60,37 +60,32 @@ const createUser = async function (req, res) {
                     return res.status(400).send({ status: false, message: "Please provide city name in shipping address", });
 
                 if (!validator.isvalidPincode(objAddress.shipping.pincode))
-                    return res.status(400).send({ status: false, message: "Please provide pincode in shipping address" });
-            }
-            else {
-                res.status(400).send({ status: false, message: "Please provide shipping address and it should be present in object with all mandatory fields" });
-            }
+              return res.status(400).send({ status: false, message: "Please provide pincode in shipping address" });}
+            else {res.status(400).send({ status: false, message:
+                 "Please provide shipping address and it should be present in object with all mandatory fields" })}
 
             if (objAddress.billing) {
                 if (!validator.isValid(objAddress.billing.street))
-                    return res.status(400).send({ status: false, message: "Please provide street name in billing address" });
+                    return res.status(400).send({ status: false, message: "Please provide street name in billing address"});
 
                 if (!validator.isValid(objAddress.billing.city))
-                    return res.status(400).send({ status: false, message: "Please provide city name in billing address" });
+                    return res.status(400).send({ status: false, message: "Please provide city name in billing address"});
 
                 if (!validator.isvalidPincode(objAddress.billing.pincode))
-                    return res.status(400).send({ status: false, message: "Please provide pincode in billing address" });
-            }
+                    return res.status(400).send({ status: false, message: "Please provide pincode in billing address" })}
             else {
                 return res.status(400).send({ status: false, message: "Please provide billing address and it should be present in object with all mandatory fields" });
             }
             data["address"] = objAddress;
         }
-        else {
-            return res.status(400).send({ status: false, message: "Please Provide The Address" });
-        }
+        else {return res.status(400).send({ status: false, message: "Please Provide The Address" })}
+
         let createdUser = await userModel.create(data);
         return res.status(201).send({ status: true, message: "User Created Succefully", data: createdUser });
 
     } catch (err) {
-        return res.status(500).send({ status: false, message: err.message });
-    }
-}
+        return res.status(500).send({ status: false, message: err.message })}}
+
 
 //=================================================login========================================================================================
 
@@ -98,21 +93,21 @@ const userLogin = async (req, res) => {
     try {
         const data = req.body;
         const { email, password } = data
-        if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "please enter data in reqbody" })
+    if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "please enter data in reqbody" })
 
-        if (!email) return res.status(400).send({ status: false, message: "email not present" })
-        if (!password) return res.status(400).send({ status: false, message: "password not present" })
+    if(!email) return res.status(400).send({ status: false, message: "email not present" })
+    if (!password) return res.status(400).send({ status: false, message: "password not present" })
 
-        if (!isValidEmail(email)) return res.status(400).send({ status: false, message: "plz enter valid format ..." })
+    if (!isValidEmail(email)) return res.status(400).send({ status: false, message: "plz enter valid format ..." })
 
         const User = await userModel.findOne({ email: email })
-        if (!User) return res.status(404).send({ status: false, message: "user not found with this email id" })
+    if (!User) return res.status(404).send({ status: false, message: "user not found with this email id" })
 
         let isValidPass = await bcrypt.compare(password, User.password)
 
         if (!isValidPass) return res.status(404).send({ status: false, message: "enter correct password..." })
 
-        const payload = { userId: User._id, iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000 + 60 * 60 * 24) };
+     const payload = { userId: User._id, iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000 + 60 * 60 * 24) };
 
         const token = jwt.sign(payload, "group45")
         return res.status(200).send({ status: true, message: "User login successfully", data: { userId: User._id, token: token } });
@@ -153,14 +148,14 @@ const updateProfile = async function (req, res) {
         const { fname, lname, email, phone, password, address } = body
         const data = {}
         if (fname) {
-            if (!validator.isValid(fname)) return res.status(400).send({ status: false, message: "fname is required.." })
+            if (!validator.isValid(fname)) return res.status(400).send({ status: false, message: "fname is don't vallid"})
             if (!/^[a-zA-Z ]{2,30}$/.test(fname)) return res.status(400).send({ status: false, message: "Enter valid  fname" });
 
             data['fname'] = fname.trim()
         }
         if (lname) {
             if (!validator.isValid(lname)) return res.status(400).send({ status: false, message: "lname is required.." })
-            if (!/^[a-zA-Z ]{2,30}$/.test(lname)) return res.status(400).send({ status: false, message: "Enter valid  lname" });
+            if(!/^[a-zA-Z ]{2,30}$/.test(lname)) return res.status(400).send({ status: false, message: "Enter valid  lname" });
             data['lname'] = lname.trim()
         }
         if (email) {
@@ -173,7 +168,7 @@ const updateProfile = async function (req, res) {
         }
         if (phone) {
             if (!validator.isValid(phone)) return res.status(400).send({ status: false, message: "phone is required.." })
-            if (!validator.isValidPhone(phone)) return res.status(400).send({ status: false, message: "plz enter valid email.." })
+            if (!validator.isValidPhone(phone)) return res.status(400).send({ status: false, message:"plz enter valid email.." })
 
             let isPhonePresent = await userModel.findOne({ phone })
             if (isPhonePresent) return res.status(400).send({ status: false, message: "phone no is already exist.." })

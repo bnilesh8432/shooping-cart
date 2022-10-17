@@ -60,10 +60,9 @@ const isValidEnum  = (availableSizes)=>{
        { return false}
         return true;
 }
-const isValidName = (name) => {
-    if ((typeof name == "string" && name.trim().length != 0 && name.match(/^[A-Z a-z]{2,}$/)))
-        return true
-    return false
+const isEmptyString = (value) => {
+    if (typeof value === "string" && value.trim().length === 0) return false;
+    return true
 };
 const isValidPrice = (price) => {
     if (/[(0-9)+.?(0-9)*]+/igm)
@@ -71,4 +70,4 @@ const isValidPrice = (price) => {
     return false
 }
 module.exports = { isValidRequestBody, isValidEmail, isValid, isvalidPincode, isValidPassword, isValidPhone, 
-    isValidObjectId, isValidEnum,isValidName,isValidPrice}
+    isValidObjectId, isValidEnum,isEmptyString,isValidPrice}

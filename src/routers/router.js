@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const {createUser,userLogin,updateProfile,getUser} = require("../controllers/userController")
 const {Authentication,Authorization} = require("../middleware/midd")
-const { createProduct, getProduct, getProductById,deleteByIDProduct } = require('../controllers/productController')
+const { createProduct, getProduct, getProductById,updateProduct,deleteByIDProduct } = require('../controllers/productController')
 
 router.post('/register', createUser)
 router.post('/login', userLogin)
@@ -13,7 +13,7 @@ router.get('/user/:userId/profile', Authentication, getUser)
 router.post('/products', createProduct)
 router.get('/products', getProduct)
 router.get('/products/:productId', getProductById)
-// router.put('/products/:productId', updateProfile)
+ router.put('/products/:productId',updateProduct)
 router.delete('/products/:productId', deleteByIDProduct)
 
 //===============If Path Not Found==================//

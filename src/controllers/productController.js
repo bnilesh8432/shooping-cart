@@ -133,7 +133,7 @@ const getProductById = async (req, res) => {
 const updateProduct = async (req,res) => {
     try {
         let productId = req.params.productId
-        if (!validator.isValidObjectId(productId)){ return res.status(404).send({ status: false, message: "product " }) }
+        if (!validator.isValidObjectId(productId)){ return res.status(404).send({ status: false, message: "product id not valid " }) }
 
         let checkProduct = await productModel.findOne({ _id: productId})
         if (!checkProduct)  { return res.status(404).send({ status: false, message: "product not found" }) }

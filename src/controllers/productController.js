@@ -268,16 +268,12 @@ const getProductById = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         let productId = req.params.productId
-<<<<<<< HEAD
-        if (!validator.isValidObjectId(productId)){ return res.status(404).send({ status: false, message: "product id not valid " }) }
-=======
         if (!validator.isValidObjectId(productId)) {
             return res.status(404).send({
                 status: false,
                 message: "product "
             })
         }
->>>>>>> 3c18a7ee3c10e712a9e2dbc47830ad8e8a88b178
 
         let checkProduct = await productModel.findOne({
             _id: productId,
@@ -415,7 +411,7 @@ const updateProduct = async (req, res) => {
         })
         return res.status(200).send({
             status: true,
-            message: "product Updated",
+            message: "Update product details is successful",
             productData: UpdateProductData
         })
 

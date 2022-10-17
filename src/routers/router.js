@@ -3,6 +3,7 @@ const router = express.Router()
 const {createUser,userLogin,updateProfile,getUser} = require("../controllers/userController")
 const {Authentication,Authorization} = require("../middleware/midd")
 const { createProduct, getProduct, getProductById,updateProduct,deleteByIDProduct } = require('../controllers/productController')
+// const {deleteByUserId} = require('../controllers/cartController')
 
 router.post('/register', createUser)
 router.post('/login', userLogin)
@@ -15,6 +16,9 @@ router.get('/products', getProduct)
 router.get('/products/:productId', getProductById)
  router.put('/products/:productId',updateProduct)
 router.delete('/products/:productId', deleteByIDProduct)
+
+// =================Cart-API=======================//
+// router.delete('/users/:userId/cart', deleteByUserId)
 
 //===============If Path Not Found==================//
 router.all('/*', async function (req, res) {

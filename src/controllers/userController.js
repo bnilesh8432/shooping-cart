@@ -192,10 +192,10 @@ const userLogin = async (req, res) => {
             message: "password not present"
         })
 
-        if (!isValidEmail(email)) return res.status(400).send({
-            status: false,
-            message: "invalid email format ..."
-        })
+        // if (!isValidEmail(email)) return res.status(400).send({
+        //     status: false,
+        //     message: "invalid email format ..."
+        // })
 
         const User = await userModel.findOne({
             email: email 
@@ -285,6 +285,7 @@ const updateProfile = async function(req, res) {
         const {fname,lname,email,phone,password,address} = body
         
         const data = {}
+       
         if (fname) {
             if (!validator.isValid(fname)) return res.status(400).send({
                 status: false,
@@ -360,6 +361,8 @@ const updateProfile = async function(req, res) {
             const encryptedPassword = await bcrypt.hash(password, saltRounds);
             data['password'] = encryptedPassword
         }
+        // if(!address)
+        // return res.status(400).send({status: false, message: "address must be address"})
         if (address) {
             let objAddress = JSON.parse(address); // convort to object key
 

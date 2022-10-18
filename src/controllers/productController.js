@@ -9,7 +9,7 @@ const createProduct = async (req, res) => {
 
         const data = req.body
 
-        const {title, description,price,style,isFreeShipping,availableSizes,installments,currencyId,currencyFormat} = data
+        let {title, description,price,style,isFreeShipping,availableSizes,installments,currencyId,currencyFormat} = data
 
         if (!validator.isValidRequestBody(data) && typeof files == 'undefined') {
             return res.status(400).send({
@@ -98,10 +98,12 @@ const createProduct = async (req, res) => {
                 message: "availableSizes required"
             })
         }
-        if (validator.isValidEnum(availableSizes)) return res.status(400).send({
-            status: false,
-            msg: "availableSizes should be of (S,XS,M,X,L,XXL,XL)"
-        });
+        if(availableSizes){
+            availableSizes = JSON.parse(availableSizes)
+            availableSizes = availableSizes.map(ele => ele.toUpperCase())
+            if (!validator.isValidEnum(availableSizes)) return res.status(400).send({ status: false, message: "availableSizes should be of (S,XS,M,X,L,XXL,XL)" })
+            data['availableSizes'] = availableSizes
+        }
 
         if (!validator.isValid(installments)) {
             return res.status(400).send({
@@ -148,13 +150,10 @@ const getProduct = async function(req, res) {
             message: "plz enter size.."
         })
         if (size) {
-            size = size.trim()
-            let enumSize = ["S", "XS", "M", "X", "L", "XXL", "XL"]
-            if (!enumSize.includes(size)) return res.status(400).send({
-                status: false,
-                message: 'plz enter valid size like "S", "XS", "M", "X", "L", "XXL", "XL"'
-            })
-            filters['availableSizes'] = size
+            size = JSON.parse(size)
+            size = size.map(ele => ele.toUpperCase())
+            if (!validator.isValidEnum(size)) return res.status(400).send({ status: false, message: "size should be of (S,XS,M,X,L,XXL,XL)" })
+            filters['availableSizes'] = {$all : size}
         }
 
         if (!validator.isEmptyString(name)) return res.status(400).send({
@@ -396,16 +395,18 @@ const updateProduct = async (req, res) => {
             updateData['productImage'] = productImage
         }
 
-        // if (!validator.isEmptyString(availableSizes)) return res.status(400).send({ status: false, message: "if you want to update availableSizes then put somthing in string ..." })
-        // if(availableSizes){
-        //     let enumSize = ["S", "XS", "M", "X", "L", "XXL", "XL"]
-        //     if (!enumSize.includes(availableSizes)) return res.status(400).send({ status: false, message: "plz enter valid size like 'S', 'XS', 'M', 'X', 'L', 'XXL', 'XL'" })
-        //     updateData['availableSizes'] = {$push :availableSizes}
-        // }
+        if (!validator.isEmptyString(availableSizes)) return res.status(400).send({ status: false, message: "if you want to update availableSizes then put somthing in string ..." })
+        if(availableSizes){
+            availableSizes = JSON.parse(availableSizes)
+            availableSizes = availableSizes.map(ele => ele.toUpperCase())
+            if (!validator.isValidEnum(availableSizes)) return res.status(400).send({ status: false, message: "availableSizes should be of (S,XS,M,X,L,XXL,XL)" })
+        }
+        
 
         console.log(updateData)
         let UpdateProductData = await productModel.findByIdAndUpdate(productId, {
-            $set: updateData
+            $set: updateData,
+            $addToSet : {availableSizes}
         }, {
             new: true
         })

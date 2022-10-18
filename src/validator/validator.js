@@ -56,9 +56,13 @@ const isValidPhone = function (phone) {
 
 const isValidEnum  = (availableSizes)=>{
     let enums = ["S", "XS", "M", "X", "L", "XXL", "XL"]
-    if(enums.includes(availableSizes))
-       { return false}
-        return true;
+    availableSizes = [...new Set(availableSizes)]
+    availableSizes = availableSizes.map(ele => {return ele.toUpperCase()})
+
+    let checkEnum = availableSizes.filter(ele => enums.includes(ele))
+
+    if( checkEnum.length == availableSizes.length) {return true}
+    return false
 }
 const isEmptyString = (value) => {
     if (typeof value === "string" && value.trim().length === 0) return false;

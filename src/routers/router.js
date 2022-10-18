@@ -3,7 +3,7 @@ const router = express.Router()
 const {createUser,userLogin,updateProfile,getUser} = require("../controllers/userController")
 const {Authentication,Authorization} = require("../middleware/midd")
 const { createProduct, getProduct, getProductById,updateProduct,deleteByIDProduct } = require('../controllers/productController')
-// const {deleteByUserId} = require('../controllers/cartController')
+const {updateCart, deleteByUserId,createCart,getCart} = require('../controllers/cartController')
 
 router.post('/register', createUser)
 router.post('/login', userLogin)
@@ -18,7 +18,10 @@ router.get('/products/:productId', getProductById)
 router.delete('/products/:productId', deleteByIDProduct)
 
 // =================Cart-API=======================//
-// router.delete('/users/:userId/cart', deleteByUserId)
+router.post("/users/:userId/cart",createCart)
+router.get("/users/:userId/cart",getCart)
+router.put("/users/:userId/cart",updateCart)
+router.delete('/users/:userId/cart', deleteByUserId)
 
 //===============If Path Not Found==================//
 router.all('/*', async function (req, res) {

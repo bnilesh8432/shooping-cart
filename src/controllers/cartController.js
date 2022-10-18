@@ -1,7 +1,7 @@
 const cartModel = require('../models/cartModel')
 const mongoose = require('mongoose')
 
-
+//==============================================================================================================================================================
 
 const createCart = async function (req, res) {
     try {
@@ -69,24 +69,74 @@ const createCart = async function (req, res) {
     }
   }
 
+  //==========================================================================================================================================
 
-const deleteByUserId = async (req, res) => {
+  const getCart = async function (req, res) {
     try {
-let userId = req.params.userId
-let findCart = await cartModel.findOne({userId: userId})
-if(findCart.items.length == 0){
-return res.status(400).send({status: false, message: "cart is already empty"})
-}
-await cartModel.updateOne({_id: findCart._id}),
-{items: [], totalPrice: 0, totalitem: 0}
-return res.status(204).send({status: false, message: "deleted successfully"})
-}      
-    catch (err){
-        return res.status(500).send({status: false, message: err.message})
+      let reqUserId = req.params.userId;
+      if (!reqUserId) {
+        return res
+          .status(400)
+          .send({ status: false, message: "userId is required path params " });
+      }
+      if (!mongoose.Types.ObjectId.isValid(reqUserId)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "User id is invalid!" });
+      }
+  
+      let isValid = await userModel.findOne({ _id: reqUserId });
+      if (!isValid) {
+        return res.status(404).send({
+          status: false,
+          message: "No User with this given userId. please give a valid user id",
+        });
+      }
+      //Authentication
+      // if (req.pass.userId !== reqUserId) {
+      //     return res.status(403).send({ status: false, msg: "you are not authorised !!" })
+      //   }
+  
+      const cart = await cartModel
+        .findOne({ userId: isValid._id })
+        .select({
+          userId: 1,
+          items: 1,
+          totalPrice: 1,
+          totalItems: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        });
+      if (!cart) {
+        return res.status(404).send({ status: false, message: "Empty Cart." });
+      }
+  
+      let { items, userId, totalPrice, totalItems } = cart;
+  
+      let productId = items.forEach(function (obj) {
+        return obj.productId;
+      });
+      let item = await productModel
+        .findOne(productId)
+        .select({ title: 1, description: 1, price: 1, productImage: 1 });
+       //console.log(item)
+  
+      let finalData = {
+        userId: userId,
+        items: item,
+        totalPrice: totalPrice,
+        totalItems: totalItems,
+      };
+  
+      return res.status(200).send({ status: true, data: finalData });
+    } catch (err) {
+      return res.status(500).send({ status: false, Error: err.message });
     }
-}
+  };
 
-//====================put cart-api==================================
+
+
+//====================put cart-api=================================================================================
 
 const updateCart = async (req, res) => {
     try {
@@ -132,5 +182,25 @@ const updateCart = async (req, res) => {
             return res.status(500).send({ status: false, message: err.message });
         }}
 
-        
-module.export = {updateCart, deleteByUserId,createCart}
+
+
+//================================================================================================================================================
+
+        const deleteByUserId = async (req, res) => {
+            try {
+        let userId = req.params.userId
+        let findCart = await cartModel.findOne({userId: userId})
+        if(findCart.items.length == 0){
+        return res.status(400).send({status: false, message: "cart is already empty"})
+        }
+        await cartModel.updateOne({_id: findCart._id}),
+        {items: [], totalPrice: 0, totalitem: 0}
+        return res.status(204).send({status: false, message: "deleted successfully"})
+        }      
+            catch (err){
+                return res.status(500).send({status: false, message: err.message})
+            }
+        }
+
+
+module.export = {updateCart, deleteByUserId,createCart,getCart}

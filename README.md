@@ -515,3 +515,28 @@ array is a special type of object and the values are defined on the basis of ind
 hoisting
 both type of functions difference
 socket.io
+
+
+
+
+
+
+const deleteByUserId = async (req, res) => {
+  try {
+let userId = req.params.userId
+if (!mongoose.Types.ObjectId.isValid(userId)) return res.status(400).send({ status: false, msg: "Bookid is not valid" })
+// if(!validator.isValidObjectId(userId)){
+// return res.status(400).send({status: false, message: "provide valid userId"})
+//}
+const cart = await cartModel.findOneAndUpdate({userId:userId},{item:[],totalItems:0,totalPrice:0})
+if(!cart)
+return res.status(400).send({status: false, message: "cart is not exisit"})
+if(cart.items.length==0){
+  return res.status(400).send({status: false, message: "cart is already empty"})
+
+}
+return res.status(204).send({status: false, message: "deleted successfully"})
+  }
+catch (err){
+      return res.status(500).send({status: false, message: err.message})
+  }}

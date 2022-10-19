@@ -4,7 +4,7 @@ const {createUser,userLogin,updateProfile,getUser} = require("../controllers/use
 const {Authentication,Authorization} = require("../middleware/midd")
 const { createProduct, getProduct, getProductById,updateProduct,deleteByIDProduct } = require('../controllers/productController')
 const {updateCart, deleteByUserId,createCart,getCart} = require('../controllers/cartController')
-const { createOrder } = require('../controllers/orderController')
+const { createOrder,updateOrder } = require('../controllers/orderController')
 
 router.post('/register', createUser)
 router.post('/login', userLogin)
@@ -25,6 +25,7 @@ router.put("/users/:userId/cart",updateCart)
 router.delete('/users/:userId/cart', deleteByUserId)
 //==================================================================
 router.post("/users/:userId/orders",createOrder)
+router.put("/users/:userId/orders",updateOrder)
 
 //===============If Path Not Found==================//
 router.all('/*', async function (req, res) {

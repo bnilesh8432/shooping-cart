@@ -79,15 +79,13 @@ const createCart = async function (req, res) {
 const getCart = async function (req, res) {
   try {
     let reqUserId = req.params.userId;
-    if (!reqUserId) {
-      return res.status(400).send({ status: false, message: "userId is required path params " });
-    }
+
     if (!validator.isValidObjectId(reqUserId)) {
       return res.status(400).send({ status: false, message: "User id is invalid!" });
     }
 
-    let isValid = await userModel.findOne({ _id: reqUserId });
-    if (!isValid) {
+    let user = await userModel.findById(reqUserId);
+    if (!user) {
       return res.status(404).send({ status: false, message: "User not found with this userId", });
     }
     //Authentication
@@ -95,26 +93,12 @@ const getCart = async function (req, res) {
     //     return res.status(403).send({ status: false, msg: "you are not authorised !!" })
     //   }
 
-    const cart = await cartModel.findOne({ userId: isValid._id }).select({ userId: 1, items: 1, totalPrice: 1, totalItems: 1, createdAt: 1, updatedAt: 1, });
+    const cart = await cartModel.findOne({ userId: user._id }).populate({path:'items',populate : "productId" ,select : "title"});
     if (!cart) {
       return res.status(404).send({ status: false, message: "Cart Not found with this cart id" });
     }
 
-    let { items, userId, totalPrice, totalItems } = cart;
-
-    let productId = items.forEach(function (obj) {
-      return obj.productId;
-    });
-    let item = await productModel.find(productId).select({ title: 1, description: 1, price: 1, productImage: 1 });
-
-    let finalData = {
-      userId: userId,
-      items: item,
-      totalPrice: totalPrice,
-      totalItems: totalItems,
-    };
-
-    return res.status(200).send({ status: true, message: "Success", data: finalData });
+    return res.status(200).send({ status: true, message: "Success", data: cart});
   } catch (err) {
     return res.status(500).send({ status: false, Error: err.message });
   }

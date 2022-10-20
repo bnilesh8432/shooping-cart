@@ -70,7 +70,7 @@ const createProduct = async (req, res) => {
         //     return res.status(400).send({ status: false, message: "availableSizes required" })
         // }
         if (availableSizes) {
-            
+
             availableSizes = JSON.parse(availableSizes)
             if (typeof availableSizes != "object") {
                 return res.status(400).send({ status: false, message: 'plz give availableSizes in array of string like-> ["X","L"]' })
@@ -127,14 +127,14 @@ const getProduct = async function (req, res) {
         if (!validator.isEmptyString(name)) {
             return res.status(400).send({ status: false, message: "plz enter name.." })
         }
-         if (name) {
-        //     name = name.trim()
+        if (name) {
+            //     name = name.trim()
             // filters['title'] = name
-        // }
-        name = name.trim()
+            // }
+            name = name.trim()
             const regexName = new RegExp(name, "i");
             filters['title'] = { $regex: regexName };
-         }
+        }
 
         if (!validator.isEmptyString(price)) {
             return res.status(400).send({ status: false, message: "plz enter price.." })

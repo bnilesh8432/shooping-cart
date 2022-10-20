@@ -82,7 +82,7 @@ const createUser = async function (req, res) {
                 }
                 if (!validator.isvalidPincode(objAddress.shipping.pincode)) {
                     return res.status(400).send({ status: false, message: "Please provide pincode in shipping address" });
-                } 
+                }
             }
             else {
                 return res.status(400).send({ status: false, message: "Please provide shipping address and it should be present in object with all mandatory fields" })

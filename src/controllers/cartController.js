@@ -11,7 +11,7 @@ const createCart = async function (req, res) {
     let userId = req.params.userId
     let { productId } = req.body
 
-    if(!validator.isValidRequestBody(req.body)){
+    if (!validator.isValidRequestBody(req.body)) {
       return res.status(400).send({ status: false, message: "plz enter data to create cart .." })
     }
     if (!validator.isValid(productId)) {

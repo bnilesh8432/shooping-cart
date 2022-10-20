@@ -19,13 +19,13 @@ router.get('/products/:productId', getProductById)
 router.delete('/products/:productId', deleteByIDProduct)
 
 // =================Cart-API=======================//
-router.post("/users/:userId/cart",createCart)
-router.get("/users/:userId/cart",getCart)
-router.put("/users/:userId/cart",updateCart)
-router.delete('/users/:userId/cart', deleteByUserId)
+router.post("/users/:userId/cart",Authentication,Authorization,createCart)
+router.get("/users/:userId/cart",Authentication,Authorization,getCart)
+router.put("/users/:userId/cart",Authentication,Authorization,updateCart)
+router.delete('/users/:userId/cart', Authentication,Authorization,deleteByUserId)
 //==================================================================
-router.post("/users/:userId/orders",createOrder)
-router.put("/users/:userId/orders",updateOrder)
+router.post("/users/:userId/orders",Authentication,Authorization,createOrder)
+router.put("/users/:userId/orders",Authentication,Authorization,updateOrder)
 
 //===============If Path Not Found==================//
 router.all('/*', async function (req, res) {

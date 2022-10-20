@@ -12,10 +12,6 @@ const createCart = async function (req, res) {
     let { productId } = req.body
 
 
-    if (!validator.isValidObjectId(userId)) {
-      return res.status(400).send({ status: false, message: "userId is invalid" })
-    }
-
     if (!productId) {
       return res.status(400).send({ status: false, message: "Enter productId for the product to be added to cart." })
     }
@@ -23,7 +19,6 @@ const createCart = async function (req, res) {
     if (!validator.isValidObjectId(productId)) {
       return res.status(400).send({ status: false, message: "productId is invalid" })
     }
-
     const product = await productModel.findOne({ _id: productId, isDeleted: false })
     if (!product) {
       return res.status(404).send({ status: false, message: "Product not found" })
@@ -88,17 +83,13 @@ const getCart = async function (req, res) {
     if (!user) {
       return res.status(404).send({ status: false, message: "User not found with this userId", });
     }
-    //Authentication
-    // if (req.pass.userId !== reqUserId) {
-    //     return res.status(403).send({ status: false, msg: "you are not authorised !!" })
-    //   }
 
-    const cart = await cartModel.findOne({ userId: user._id }).populate({path:'items',populate : "productId" ,select : "title"});
+    const cart = await cartModel.findOne({ userId: user._id }).populate({ path: 'items', populate: "productId", select: "title" });
     if (!cart) {
       return res.status(404).send({ status: false, message: "Cart Not found with this cart id" });
     }
 
-    return res.status(200).send({ status: true, message: "Success", data: cart});
+    return res.status(200).send({ status: true, message: "Success", data: cart });
   } catch (err) {
     return res.status(500).send({ status: false, Error: err.message });
   }
@@ -187,14 +178,6 @@ const updateCart = async (req, res) => {
 const deleteByUserId = async (req, res) => {
   try {
     let userId = req.params.userId
-    if (!validator.isValidObjectId(userId)) {
-      return res.status(400).send({ status: false, message: "provide valid userId" })
-    }
-
-    let userExist = await userModel.findById(userId);
-    if (!userExist) {
-      return res.status(404).send({ status: false, message: "No User Found With this Id" });
-    }
 
     let findCart = await cartModel.findOne({ userId: userId })
     if (findCart.items.length == 0) {

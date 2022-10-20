@@ -73,7 +73,7 @@ const createProduct = async (req, res) => {
             
             availableSizes = JSON.parse(availableSizes)
             if (typeof availableSizes != "object") {
-                return res.status(400).send({ status: false, message: "plz give availableSizes in array of string like-> ['X','L']" })
+                return res.status(400).send({ status: false, message: 'plz give availableSizes in array of string like-> ["X","L"]' })
             }
             availableSizes = availableSizes.map(ele => ele.toUpperCase())
             if (!validator.isValidEnum(availableSizes)) {
@@ -112,10 +112,11 @@ const getProduct = async function (req, res) {
             return res.status(400).send({ status: false, message: "plz enter size.." })
         }
         if (size) {
-            // if (typeof size != "object") {
-            //     return res.status(400).send({ status: false, message: "plz give size in array of string like-> ['X','L']" })
-            // }
+
             size = JSON.parse(size)
+            if (typeof size != "object") {
+                return res.status(400).send({ status: false, message: 'plz give size in array of string like-> ["X","L"]' })
+            }
             size = size.map(ele => ele.toUpperCase())
             if (!validator.isValidEnum(size)) {
                 return res.status(400).send({ status: false, message: "size should be of (S,XS,M,X,L,XXL,XL)" })

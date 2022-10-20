@@ -8,6 +8,7 @@ const validator = require('../validator/validator')
 const Authentication = async function (req, res, next) {
   try {
     let token = (req.headers.authorization)
+    console.log(token)
 
     if (!token) {
       return res.status(400).send({ status: false, message: 'You are not logged in, Please login to proceed your request,Add token' })
@@ -49,7 +50,7 @@ const Authorization = async (req, res, next) => {
       loginUser = checkUserId._id.toString();
     }
 
-    if (loggedInUser !== loginUser)
+    if (loggedInUser != loginUser)
       return res.status(403).send({ status: false, message: "Error!! authorization failed" });
 
     next();

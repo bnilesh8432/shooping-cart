@@ -66,14 +66,15 @@ const createProduct = async (req, res) => {
             return res.status(400).send({ status: false, message: "style required" })
         }
 
-        if (!validator.isValid(availableSizes)) {
-            return res.status(400).send({ status: false, message: "availableSizes required" })
-        }
+        // if (!validator.isValid(availableSizes)) {
+        //     return res.status(400).send({ status: false, message: "availableSizes required" })
+        // }
         if (availableSizes) {
+            
+            availableSizes = JSON.parse(availableSizes)
             if (typeof availableSizes != "object") {
                 return res.status(400).send({ status: false, message: "plz give availableSizes in array of string like-> ['X','L']" })
             }
-            availableSizes = JSON.parse(availableSizes)
             availableSizes = availableSizes.map(ele => ele.toUpperCase())
             if (!validator.isValidEnum(availableSizes)) {
                 return res.status(400).send({ status: false, message: "availableSizes should be of (S,XS,M,X,L,XXL,XL)" })
@@ -111,9 +112,9 @@ const getProduct = async function (req, res) {
             return res.status(400).send({ status: false, message: "plz enter size.." })
         }
         if (size) {
-            if (typeof size != "object") {
-                return res.status(400).send({ status: false, message: "plz give size in array of string like-> ['X','L']" })
-            }
+            // if (typeof size != "object") {
+            //     return res.status(400).send({ status: false, message: "plz give size in array of string like-> ['X','L']" })
+            // }
             size = JSON.parse(size)
             size = size.map(ele => ele.toUpperCase())
             if (!validator.isValidEnum(size)) {
@@ -125,10 +126,14 @@ const getProduct = async function (req, res) {
         if (!validator.isEmptyString(name)) {
             return res.status(400).send({ status: false, message: "plz enter name.." })
         }
-        if (name) {
-            name = name.trim()
-            filters['title'] = name
-        }
+         if (name) {
+        //     name = name.trim()
+            // filters['title'] = name
+        // }
+        name = name.trim()
+            const regexName = new RegExp(name, "i");
+            filters['title'] = { $regex: regexName };
+         }
 
         if (!validator.isEmptyString(price)) {
             return res.status(400).send({ status: false, message: "plz enter price.." })
@@ -194,7 +199,7 @@ const updateProduct = async (req, res) => {
     try {
         let productId = req.params.productId
         if (!validator.isValidObjectId(productId)) {
-            return res.status(404).send({ status: false, message: "product " })
+            return res.status(400).send({ status: false, message: "Invalid ProductId " })
         }
 
         let checkProduct = await productModel.findOne({ _id: productId, isDeleted: false })

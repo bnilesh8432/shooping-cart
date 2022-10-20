@@ -82,9 +82,10 @@ const createUser = async function (req, res) {
                 }
                 if (!validator.isvalidPincode(objAddress.shipping.pincode)) {
                     return res.status(400).send({ status: false, message: "Please provide pincode in shipping address" });
-                } else {
-                    return res.status(400).send({ status: false, message: "Please provide shipping address and it should be present in object with all mandatory fields" })
-                }
+                } 
+            }
+            else {
+                return res.status(400).send({ status: false, message: "Please provide shipping address and it should be present in object with all mandatory fields" })
             }
             if (objAddress.billing) {
                 if (!validator.isValid(objAddress.billing.street)) {
@@ -168,7 +169,7 @@ const getUser = async function (req, res) {
             return res.status(400).send({ status: false, message: "enter valid user Id ..." })
         }
 
-        const user = await userModel.findById({ userId })
+        const user = await userModel.findOne({ _id: userId })
         if (!user) {
             return res.status(404).send({ status: false, message: "userID dosen't exist" })
         }

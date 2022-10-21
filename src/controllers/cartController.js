@@ -41,14 +41,14 @@ const createCart = async function (req, res) {
       )
       return res.status(201).send({ status: true, message: "Success", data: newCart })
     }
-    let indexOfProduct = -1
-    for (let i in cart.items) {
-      if (cart.items[i].productId == productId) {
-        indexOfProduct = i
+    let indexOfProduct = -1                                  // product no exist then value -1
+    for (let i in cart.items) {                                   // find the product in cart item
+      if (cart.items[i].productId == productId) {                 // [i] update when find 
+        indexOfProduct = i                                        // give i 
         break
       }
     }
-    if (indexOfProduct == -1) {
+    if (indexOfProduct == -1) {                                      // compaire line 44 with this when find the same then update
       cart = await cartModel.findOneAndUpdate(
         { userId },
         {
@@ -59,7 +59,7 @@ const createCart = async function (req, res) {
       )
     }
     else {
-      ++cart.items[indexOfProduct].quantity
+      ++cart.items[indexOfProduct].quantity                           // when find a prodcut then update
       cart.totalPrice += product.price
       await cart.save()
     }
@@ -148,14 +148,14 @@ const updateCart = async (req, res) => {
     }
 
     let quantity = cartDeatil.items[index].quantity;
-    if (removeProduct == 0) {
-      cartDeatil.items.splice(index, 1)
-      cartDeatil.totalItems -= 1;
+    if (removeProduct == 0) {                                       // recied by body prodvut 0 then remove 
+      cartDeatil.items.splice(index, 1)    /// remove
+      cartDeatil.totalItems -= 1;                          
       cartDeatil.totalPrice -= quantity * ProductDeatil.price;
     }
     else {
-      if (quantity == 1) {
-        cartDeatil.items.splice(index, 1)
+      if (quantity == 1) {  // allready one then remove 
+        cartDeatil.items.splice(index, 1)   /// remove 
         cartDeatil.totalItems -= 1;
       }
       else {

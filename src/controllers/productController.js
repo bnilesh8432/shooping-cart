@@ -124,7 +124,7 @@ const getProduct = async function (req, res) {
             filters['availableSizes'] = { $all: size }
         }
 
-        if (!validator.isEmptyString(name)) {
+        if (!validator.isEmptyString(name)) {     
             return res.status(400).send({ status: false, message: "plz enter name.." })
         }
         if (name) {
@@ -132,7 +132,7 @@ const getProduct = async function (req, res) {
             // filters['title'] = name
             // }
             name = name.trim()
-            const regexName = new RegExp(name, "i");
+            const regexName = new RegExp(name, "i");   /// smaal letter or ya bada letter dono lega 
             filters['title'] = { $regex: regexName };
         }
 

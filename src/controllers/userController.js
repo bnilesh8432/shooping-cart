@@ -66,7 +66,7 @@ const createUser = async function (req, res) {
         if (!validator.isValidPassword(password)) {
             return res.status(400).send({ status: false, message: "Password Length must be btwn 8-15 chars only" });
         }
-        const saltRounds = 10;
+        const saltRounds = 10;  //passwaod me ek random string add some letter in randomly taki password or long bane
         const encryptedPassword = await bcrypt.hash(password, saltRounds);
         data["password"] = encryptedPassword;
 

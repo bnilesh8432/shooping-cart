@@ -157,6 +157,7 @@ const updateCart = async (req, res) => {
       if (quantity == 1) {  // allready one then remove 
         cartDeatil.items.splice(index, 1)   /// remove 
         cartDeatil.totalItems -= 1;
+        cartDeatil.totalPrice -= ProductDeatil.price;
       }
       else {
         cartDeatil.items[index].quantity -= 1;
